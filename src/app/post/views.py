@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
-from ..database import get_db
+from ...database import get_db
 from .schemas import Post,PostCreate
 from .service import (
     create_post_svc,
@@ -89,7 +89,7 @@ async def like_post(post_id:int, username: str, db:Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=detail)
     
 @router.post("/unlike", status_code=status.HTTP_204_NO_CONTENT)
-async def like_post(post_id:int, username: str, db:Session = Depends(get_db)):
+async def unlike_post(post_id:int, username: str, db:Session = Depends(get_db)):
     res, detail= await unlike_post_svc(db , post_id, username)
     if res == False:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=detail)

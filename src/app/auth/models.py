@@ -4,8 +4,8 @@ from sqlalchemy import Column, String, Date, Enum, DateTime, ForeignKey, Integer
 from datetime import datetime
 from sqlalchemy.orm import relationship
 
-from ..database import Base
-from src.auth.enums import Gender
+from ...database import Base
+from .enums import Gender
 from ..post.models import post_likes, Post
 
 class Follow(Base):

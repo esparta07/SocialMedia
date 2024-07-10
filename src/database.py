@@ -5,11 +5,11 @@ from sqlalchemy.orm import sessionmaker
 DB_URL = "sqlite:///./src/db.sql"
 
 engine = create_engine(DB_URL, pool_pre_ping=True)
-SessionLoacl = sessionmaker(bind=engine, autoflush=False)
+SessionLocal = sessionmaker(bind=engine, autoflush=False)
 Base = declarative_base()
 
 def get_db():
-    db=SessionLoacl()
+    db = SessionLocal()
     try:
         yield db
     finally:
