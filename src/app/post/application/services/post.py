@@ -1,7 +1,7 @@
 from typing import List, Optional
-from domain.repository.post import PostRepository
-from domain.entity.post import PostCreate, Post
-from domain.services.post import AbstractPostService
+from src.app.post.domain.repository.post import PostRepository
+from src.app.post.domain.entity.post import PostCreate, Post
+from src.app.post.domain.services.post import AbstractPostService
 
 class PostService(AbstractPostService):
 

@@ -1,9 +1,9 @@
-# domain/services/post.py
+
 
 from abc import ABC, abstractmethod
 from typing import Optional, List
-from domain.entity.post import PostCreate, Post
-from domain.repository.post import PostRepository
+from src.app.post.domain.entity.post import PostCreate, Post
+from src.app.post.domain.repository.post import PostRepository
 
 class AbstractPostService(ABC):
 

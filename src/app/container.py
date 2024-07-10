@@ -1,20 +1,17 @@
-from dependency_injector import containers, providers, wiring
-from sqlalchemy.orm import Session
-from ..database import SessionLocal  # Adjust as per your database setup
+from dependency_injector import containers, providers
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-class AppContainer(containers.DeclarativeContainer):
-    # Define providers for application-level dependencies
+DATABASE_URL  = "sqlite:///./src/db.sql"
 
-    @providers.Singleton
-    def session(self) -> Session:
-        """Provides a SQLAlchemy session."""
-        return SessionLocal()
+class ApplicationContainer(containers.DeclarativeContainer):
+    wiring_config = containers.WiringConfiguration(modules=["src.app.post.adapter.input.api.v1.post"])
 
-    # Add more application-level dependencies as needed
+    db_engine = providers.Singleton(create_engine, DATABASE_URL)
+    db_session = providers.Singleton(sessionmaker, bind=db_engine)
 
-    # Wiring configuration to automate dependency injection
-    wiring_config = wiring.Wiring()
-
-    def __init__(self):
-        super().__init__()
-        self.wiring_config = self.wiring_config(self)
+    # Provide a session
+    db = providers.Resource(
+        lambda db_session: db_session(),
+        db_session=db_session
+    )

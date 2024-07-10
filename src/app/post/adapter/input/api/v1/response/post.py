@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
-from auth.schemas import User
+from src.app.auth.schemas import User
 
 class PostResponse(BaseModel):
     id: int

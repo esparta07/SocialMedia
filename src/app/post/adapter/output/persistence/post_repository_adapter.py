@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from domain.repository.post import PostRepository
-from domain.entity.post import Post, Hashtag, PostCreate
+from src.app.post.domain.repository.post import PostRepository
+from src.app.post.domain.entity.post import Post, Hashtag, PostCreate
 from ......database import get_db
 
 class PostRepositoryAdapter(PostRepository):

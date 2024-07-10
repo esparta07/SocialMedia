@@ -1,34 +1,20 @@
-from dependency_injector import containers, providers, wiring
-from src.app.container import AppContainer  # Import the main AppContainer
-from domain.repository.post import PostRepository
-from domain.services.post import AbstractPostService
-from adapter.output.persistence.post_repository_adapter import PostRepositoryAdapter
-from sqlalchemy.orm import Session
+from dependency_injector import containers, providers
+
+from src.app.container import ApplicationContainer
+from src.app.post.adapter.output.persistence.post_repository_adapter import PostRepositoryAdapter
+from src.app.post.application.services.post import PostService
 
 class PostContainer(containers.DeclarativeContainer):
-    # Extend the main application container
-    app_container = providers.Container(AppContainer)
+    wiring_config = containers.WiringConfiguration(modules=["src.app.post.adapter.input.api.v1.post"])
 
-    @providers.Singleton
-    @app_container.inject
-    def session(self, session: Session = providers.Provider[AppContainer.session]):
-        return session
+    application_container = providers.Container(ApplicationContainer)
 
-    @providers.Singleton
-    def post_repository(self, session: Session) -> PostRepository:
-        """Provides an instance of PostRepository."""
-        return PostRepositoryAdapter(session)
+    post_repository = providers.Factory(
+        PostRepositoryAdapter,
+        db=application_container.db
+    )
 
-    @providers.Singleton
-    def post_service(self, repository: PostRepository) -> AbstractPostService:
-        """Provides an instance of AbstractPostService."""
-        return AbstractPostService(repository)
-
-    # Add more providers specific to the post module
-
-    # Wiring configuration to automate dependency injection
-    wiring_config = wiring.Wiring()
-
-    def __init__(self):
-        super().__init__()
-        self.wiring_config = self.wiring_config(self)
+    post_service = providers.Factory(
+        PostService,
+        repository=post_repository
+    )
